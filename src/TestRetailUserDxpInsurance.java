@@ -1,3 +1,4 @@
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 import java.util.*;
@@ -51,13 +52,13 @@ public class TestRetailUserDxpInsurance {
 	private void _enterSupportTicket() {
 		_navigateToUrl(_BASE_URL + "group/support/support-ticket");
 
-		List<WebElement> formFields = driver.findElements(
+		List<WebElement> formFields = _getElementsWhenPresent(
 			By.className("ddm-field"));
 
 		_selectDropDownItem(formFields.get(0), 0);
 		_selectDropDownItem(formFields.get(1), 1);
 
-		List<WebElement> textFields = driver.findElements(
+		List<WebElement> textFields = _getElementsWhenPresent(
 			By.className("ddm-field-text"));
 
 		for (WebElement textField : textFields) {
@@ -65,55 +66,47 @@ public class TestRetailUserDxpInsurance {
 			textField.sendKeys("test");
 		}
 
-		driver.findElement(
-			By.className("btn-primary")
-		).click();
+		_getElementWhenPresent(By.className("btn-primary")).click();
 	}
 
 	private void _exploreEventSite() {
-		driver.findElement(
-			By.xpath("//span[contains(text()," + "'Overview')]")
-		).click();
-		driver.findElement(
-			By.xpath("//span[contains(text(),'Location')]")
-		).click();
-		driver.findElement(
-			By.xpath("//span[contains(text(),'Speakers')]")
-		).click();
-		driver.findElement(
-			By.xpath("//span[contains(text(),'Sessions')]")
-		).click();
+		_getElementWhenPresent(By.xpath("//span[contains(text(),'Overview')]")).click();
+		_getElementWhenPresent(By.xpath("//span[contains(text(),'Location')]")).click();
+		_getElementWhenPresent(By.xpath("//span[contains(text(),'Speakers')]")).click();
+		_getElementWhenPresent(By.xpath("//span[contains(text(),'Sessions')]")).click();
 
-		driver.findElement(
+		_getElementWhenPresent(
 			By.id("full-name")
 		).sendKeys(
 			"Test Test"
 		);
-		driver.findElement(
+
+		_getElementWhenPresent(
 			By.id("email")
 		).sendKeys(
 			"test@speedwell" + ".com"
 		);
-		driver.findElement(
+
+		_getElementWhenPresent(
 			By.id("company")
 		).sendKeys(
 			"Test Company"
 		);
 
-		driver.findElement(
+		_getElementWhenPresent(
 			By.xpath("//a//div[contains(@class, 'form-button-text')]")
 		).click();
 
-		WebElement featuredCoverButton = driver.findElement(
+		WebElement featuredCoverButton = _getElementWhenPresent(
 			By.xpath("//a[contains(@class, 'featured-cover-button')]"));
 
 		_scrollToClick(featuredCoverButton);
 
-		driver.findElement(
+		_getElementWhenPresent(
 			By.xpath("//a" + "[contains(@class, 'learn-more-button')]")
 		).click();
 
-		driver.findElement(
+		_getElementWhenPresent(
 			By.xpath("//div[contains(text(),'BE " + "INSPIRED TODAY')]"));
 
 		js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
@@ -125,6 +118,12 @@ public class TestRetailUserDxpInsurance {
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 
 		return wait.until(presenceOfElementLocated(locator));
+	}
+
+	private List<WebElement> _getElementsWhenPresent(By locator) {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		return wait.until(presenceOfAllElementsLocatedBy(locator));
 	}
 
 	private void _liveChat() {
@@ -140,33 +139,33 @@ public class TestRetailUserDxpInsurance {
 			Keys.ENTER
 		);
 
-		driver.findElement(
+		_getElementWhenPresent(
 			By.xpath("//button[contains(@class,'lp_minimize')" + "]")
 		).click();
 	}
 
 	private void _login(String listUser) {
-		driver.findElement(
+		_getElementWhenPresent(
 			By.id("_com_liferay_login_web_portlet_LoginPortlet_login")
 		).sendKeys(
 			Keys.chord(Keys.CONTROL, "a")
 		);
-		driver.findElement(
+		_getElementWhenPresent(
 			By.id("_com_liferay_login_web_portlet_LoginPortlet_login")
 		).sendKeys(
 			Keys.DELETE
 		);
-		driver.findElement(
+		_getElementWhenPresent(
 			By.id("_com_liferay_login_web_portlet_LoginPortlet_login")
 		).sendKeys(
 			listUser
 		);
-		driver.findElement(
+		_getElementWhenPresent(
 			By.id("_com_liferay_login_web_portlet_LoginPortlet_password")
 		).sendKeys(
 			"test"
 		);
-		driver.findElement(
+		_getElementWhenPresent(
 			By.id("_com_liferay_login_web_portlet_LoginPortlet_login")
 		).sendKeys(
 			Keys.ENTER
@@ -204,16 +203,21 @@ public class TestRetailUserDxpInsurance {
 	}
 
 	private void _searchInKnowledgeBase() {
-		WebElement searchInput = driver.findElement(
+		WebElement searchInput = _getElementWhenPresent(
 			By.className("search-bar-keywords-input"));
 
 		searchInput.click();
 
-		searchInput.sendKeys("top contributors", Keys.ENTER);
+		searchInput.sendKeys(_getRandomSearchQuery(), Keys.ENTER);
 
-		_getElementWhenPresent(
-			By.xpath("//li[1]//div[2]//section[1]//div[1]//a[1" + "]")
-		).click();
+		try {
+			_getElementWhenPresent(
+					By.xpath("//li[1]//div[2]//section[1]//div[1]//a[1" + "]")
+			).click();
+		}
+		catch (Exception e) {
+		}
+
 	}
 
 	private void _selectDropDownItem(
@@ -224,7 +228,7 @@ public class TestRetailUserDxpInsurance {
 
 		selectArrowDown.click();
 
-		driver.findElements(
+		_getElementsWhenPresent(
 			By.className("ddm-select-dropdown")
 		).get(
 			ddmSelectDropdownIndex
@@ -256,14 +260,12 @@ public class TestRetailUserDxpInsurance {
 			for (int f = 0; f < listUsers.size(); f++) {
 				_startNewBrowser(_BASE_URL + "web/apac-auto-parts-con");
 
-				WebElement accountToggle = driver.findElement(
-					By.className("js-toggle-account"));
+				WebElement accountToggle =
+					_getElementWhenPresent(By.className("js-toggle-account"));
 
 				accountToggle.click();
 
-				driver.findElement(
-					By.className("main-link")
-				).click();
+				_getElementWhenPresent(By.className("main-link")).click();
 
 				_login(listUsers.get(f));
 
@@ -291,9 +293,7 @@ public class TestRetailUserDxpInsurance {
 	private void _visitManageSupportTicketPage() {
 		_navigateToUrl(_BASE_URL + "group/support/manage-support-tickets");
 
-		driver.findElement(
-			By.xpath("//tr[1]//td[1]//p[1]//a[1]//span[1]")
-		).click();
+		_getElementWhenPresent(By.xpath("//tr[1]//td[1]//p[1]//a[1]//span[1]")).click();
 
 		_getElementWhenPresent(
 			By.xpath(
@@ -332,6 +332,14 @@ public class TestRetailUserDxpInsurance {
 			}
 		}
 	}
+
+	private String _getRandomSearchQuery() {
+		int randomIndex = new Random().nextInt(_SEARCH_QUERIES.length);
+		return _SEARCH_QUERIES[randomIndex];
+	}
+
+	private static final String[] _SEARCH_QUERIES = new String[] {
+		"tires","rims","engine","supercharger","tools","seatbelts","windshield","oil change","convention","timing belt"};
 
 	private static final String _BASE_URL =
 		"http://gartner-demo-lb1-132791781.us-east-1.elb.amazonaws.com/";
