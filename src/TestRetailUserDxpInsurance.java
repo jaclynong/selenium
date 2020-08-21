@@ -211,7 +211,7 @@ public class TestRetailUserDxpInsurance {
 
 		searchInput.sendKeys("top contributors", Keys.ENTER);
 
-		driver.findElement(
+		_getElementWhenPresent(
 			By.xpath("//li[1]//div[2]//section[1]//div[1]//a[1" + "]")
 		).click();
 	}
