@@ -284,8 +284,6 @@ public class TestRetailUserDxpInsurance {
 
 			_exploreEventSite();
 
-			_liveChat();
-
 			driver.close();
 		}
 	}
@@ -314,8 +312,6 @@ public class TestRetailUserDxpInsurance {
 				if (listUsers.get(
 					f).equalsIgnoreCase(
 					"charles.ford@dieselinstallers.com")) {
-
-					_liveChat();
 				}
 
 				_enterSupportTicket();
