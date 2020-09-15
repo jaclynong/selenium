@@ -94,7 +94,7 @@ public class TestRetailUserDxpInsurance {
 		);
 
 		_getElementWhenPresent(
-			By.xpath("//a//div[contains(@class, 'form-button-text')]")
+			By.id("rsvp-button-text")
 		).click();
 
 		WebElement featuredCoverButton = _getElementWhenPresent(
@@ -103,11 +103,7 @@ public class TestRetailUserDxpInsurance {
 		_scrollToClick(featuredCoverButton);
 
 		_getElementWhenPresent(
-			By.xpath("//a" + "[contains(@class, 'learn-more-button')]")
-		).click();
-
-		_getElementWhenPresent(
-			By.xpath("//div[contains(text(),'BE " + "INSPIRED TODAY')]"));
+			By.xpath("//a[contains(text(),'BE INSPIRED TODAY')]"));
 
 		js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
@@ -223,10 +219,7 @@ public class TestRetailUserDxpInsurance {
 	private void _selectDropDownItem(
 		WebElement formField, int ddmSelectDropdownIndex) {
 
-		WebElement selectArrowDown = formField.findElement(
-			By.className("select-arrow-down-container"));
-
-		selectArrowDown.click();
+		formField.click();
 
 		_getElementsWhenPresent(
 			By.className("ddm-select-dropdown")
@@ -258,7 +251,7 @@ public class TestRetailUserDxpInsurance {
 	private void _visitEventSite(List<String> listUsers) {
 		for (int i = 0; i < _ITERATIONS; i++) {
 			for (int f = 0; f < listUsers.size(); f++) {
-				_startNewBrowser(_BASE_URL + "web/apac-auto-parts-con");
+				_startNewBrowser(_BASE_URL + "web/emea-auto-parts-con");
 
 				WebElement accountToggle =
 					_getElementWhenPresent(By.className("js-toggle-account"));
@@ -280,7 +273,7 @@ public class TestRetailUserDxpInsurance {
 
 	private void _visitEventSiteAsGuest() {
 		for (int i = 0; i < _ITERATIONS; i++) {
-			_startNewBrowser(_BASE_URL + "web/apac-auto-parts-con");
+			_startNewBrowser(_BASE_URL + "web/emea-auto-parts-con");
 
 			_exploreEventSite();
 
